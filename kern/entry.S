@@ -3,16 +3,16 @@
 #include <inc/mmu.h>
 #include <inc/memlayout.h>
 
-# Shift Right Logical 
+# Shift Right Logical
 #define SRL(val, shamt)		(((val) >> (shamt)) & ~(-1 << (32 - (shamt))))
 
 
 ###################################################################
-# The kernel (this code) is linked at address ~(KERNBASE + 1 Meg), 
+# The kernel (this code) is linked at address ~(KERNBASE + 1 Meg),
 # but the bootloader loads it at address ~1 Meg.
-#	
+#
 # RELOC(x) maps a symbol x from its link address to its actual
-# location in physical memory (its load address).	 
+# location in physical memory (its load address).
 ###################################################################
 
 #define	RELOC(x) ((x) - KERNBASE)
@@ -87,11 +87,11 @@ spin:	jmp	spin
 	.globl		bootstack
 bootstack:
 	.space		KSTKSIZE
-	.globl		bootstacktop   
+	.globl		bootstacktop
 bootstacktop:
 
 .data
-    
+
     .p2align 3
     .globl kernel_64
 kernel_64:
@@ -100,11 +100,10 @@ kernel_64:
     SEG64(STA_R|STA_W,0x0,0xffffffff)    #64 bit DS
     SEG64USER(STA_X|STA_R,0x0,0xffffffff) #64 bit USER CS
     SEG64USER(STA_R|STA_W,0x0,0xffffffff) # USER data
-    .quad   0x0080890000000000  /* TS descriptor */ 
+    .quad   0x0080890000000000  /* TS descriptor */
     .quad   0x0000000000000000 /* TS continued */
 
      .globl gdtdesc_64
 gdtdesc_64:
-    .word 0x37 
+    .word 0x37
     .quad kernel_64
-
